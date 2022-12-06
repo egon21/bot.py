@@ -1,4 +1,6 @@
-
+ #from bs4 import BeautifulSoup 
+#import requests 
+import time
 import logging
 #import matplotlib.pyplot as plt 
 
@@ -24,6 +26,26 @@ def help(update, context):
 def btc(update, context):
     update.message.reply_text('Its all going to zero!!!!! AHHHHHHHHH!!!!!')
 
+def list(update, context):
+    update.message.reply_text('start, help, btc')  
+
+#Create a function to get the price of a cryptocurrency
+def price(btc):
+#Get the URL
+    url = "https://www.google.com/search?q="+btc+"+price"
+    
+    #Make a request to the website
+    HTML = requests.get(url) 
+  
+    #Parse the HTML
+    soup = BeautifulSoup(HTML.text, 'html.parser') 
+  
+    #Find the current price 
+    #text = soup.find("div", attrs={'class':'BNeawe iBp4i AP7Wnd'}).text
+    text = soup.find("div", attrs={'class':'BNeawe iBp4i AP7Wnd'}).find("div", attrs={'class':'BNeawe iBp4i AP7Wnd'}).text
+#Return the text 
+    return text
+
 #function to send a gif
 #def gif(update, context):
  #   update.message.reply_img = mpimg.imread('bogdabotgif.jpg')
@@ -45,6 +67,8 @@ def main():
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("help", help))
     dp.add_handler(CommandHandler("btc", btc))
+    dp.add_handler(CommandHandler("list", list))
+    dp.add_handler(CommandHandler("price", price ))
     #dp.add_handler(CommandHandler("gif", bog))
     #dp.add_handler(MessageHandler(Filters.text, echo))
 
